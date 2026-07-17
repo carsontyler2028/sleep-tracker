@@ -3,3 +3,46 @@ html, body, #root {
   height: 100%;
   margin: 0;
 }
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.app-logo svg {
+  color: #7dd3fc;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.connection-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.connection-dot.connected {
+  background: green;
+}
+
+.connection-dot.offline {
+  background: red;
+}
+
+.connection-dot.checking {
+  background: gray;
+}
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
