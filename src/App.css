@@ -1,32 +1,43 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  overflow: hidden;
 }
 
 
+/* Main app */
+
 .app {
+
   width:100vw;
   height:100vh;
 
   display:flex;
+
   justify-content:center;
+
   align-items:center;
 
   background:#eee;
+
 }
 
 
 .dark {
+
   background:#101010;
+
   color:white;
+
 }
 
 
 
+/* Main card */
+
 .card {
 
   width:100%;
+
   height:100%;
 
   background:white;
@@ -35,28 +46,31 @@ body {
 
   overflow:hidden;
 
-}
+  display:flex;
 
+  flex-direction:column;
+
+}
 
 
 .dark .card {
+
   background:#1c1c1c;
+
 }
 
 
 
 
+/* Desktop */
+
 @media(min-width:700px){
 
-  .card{
+  .card {
 
-    width:600px;
-    height:85vh;
+    width:100%;
 
-    border-radius:25px;
-
-    box-shadow:
-      0 8px 25px rgba(0,0,0,.25);
+    height:100%;
 
   }
 
@@ -64,9 +78,11 @@ body {
 
 
 
+/* Content area */
+
 .content {
 
-  height:100%;
+  flex:1;
 
   overflow-y:auto;
 
@@ -80,6 +96,25 @@ body {
 
 
 
+
+/* Header */
+
+.app-header {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:15px;
+
+}
+
+
+
+
+/* Buttons */
 
 .mainButton {
 
@@ -96,6 +131,9 @@ body {
 }
 
 
+
+
+/* Cards */
 
 .infoCard {
 
@@ -118,6 +156,7 @@ body {
 
 
 
+
 .session {
 
   background:#eee;
@@ -131,7 +170,6 @@ body {
 }
 
 
-
 .dark .session {
 
   background:#303030;
@@ -140,6 +178,9 @@ body {
 
 
 
+
+
+/* Navigation */
 
 nav {
 
@@ -171,7 +212,6 @@ nav {
 
 
 
-
 nav button {
 
   flex:1;
@@ -191,9 +231,314 @@ small {
   display:block;
 
 }
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
+
+
+
+
+
+/* Sleep goal bar */
+
+.sleepGoalRow {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+
+
+.sleepGoalBar {
+
+  flex:1;
+
+  position:relative;
+
+  height:20px;
+
+  background:#444;
+
+  border-radius:10px;
+
+  overflow:visible;
+
+}
+
+
+
+.sleepGoalFill {
+
+  height:100%;
+
+  background:#4caf50;
+
+  border-radius:10px;
+
+}
+
+
+
+.sleepGoalMarker {
+
+  position:absolute;
+
+  top:-8px;
+
+  bottom:-8px;
+
+  width:2px;
+
+  background:white;
+
+}
+
+
+
+.sleepGoalLabel {
+
+  position:absolute;
+
+  top:-25px;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  font-size:12px;
+
+}
+
+
+
+.sleepGoalPercent {
+
+  min-width:45px;
+
+  text-align:right;
+
+  font-weight:bold;
+
+}
+
+
+
+
+
+/* Settings layout */
+
+.settingsSleepRow {
+
+  display:flex;
+
+  gap:20px;
+
+}
+
+
+
+.settingsSleepRow .infoCard {
+
+  flex:1;
+
+}
+
+
+
+
+/* Sleep wheels */
+
+.sleepWheel {
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:10px;
+
+}
+
+
+
+
+/* Wheel picker */
+
+.wheelPicker {
+
+  position:relative;
+
+  width:90px;
+
+  height:160px;
+
+  overflow:hidden;
+
+  cursor:grab;
+
+  user-select:none;
+
+  touch-action:none;
+
+}
+
+
+
+.wheelPicker:active {
+
+  cursor:grabbing;
+
+}
+
+
+
+.wheelList {
+
+  position:absolute;
+
+  top:0;
+
+  left:0;
+
+  right:0;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  transition:transform .15s ease;
+
+}
+
+
+
+.wheelSpacer {
+
+  height:55px;
+
+  flex-shrink:0;
+
+}
+
+
+
+.wheelItem {
+
+  height:50px;
+
+  width:100%;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  border:none;
+
+  background:none;
+
+  color:inherit;
+
+  font-size:22px;
+
+  opacity:.45;
+
+}
+
+
+
+.wheelItem.selected {
+
+  opacity:1;
+
+  font-weight:bold;
+
+}
+
+
+
+.wheelSelection {
+
+  position:absolute;
+
+  left:0;
+
+  right:0;
+
+  top:55px;
+
+  height:50px;
+
+  border-top:1px solid #888;
+
+  border-bottom:1px solid #888;
+
+  pointer-events:none;
+
+  z-index:1;
+
+}
+
+
+
+.wheelFade {
+
+  position:absolute;
+
+  left:0;
+
+  right:0;
+
+  height:55px;
+
+  z-index:2;
+
+  pointer-events:none;
+
+}
+
+
+
+.wheelFade.top {
+
+  top:0;
+
+  background:linear-gradient(
+    to bottom,
+    #1c1c1c,
+    transparent
+  );
+
+}
+
+
+
+.wheelFade.bottom {
+
+  bottom:0;
+
+  background:linear-gradient(
+    to top,
+    #1c1c1c,
+    transparent
+  );
+
+}
+
+
+
+
+/* Phone layout */
+
+@media(max-width:700px){
+
+  .settingsSleepRow {
+
+    flex-direction:column;
+
+  }
+
 }

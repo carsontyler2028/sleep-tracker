@@ -10,4 +10,5 @@ export interface AppSettings {
   darkMode: boolean;
   use24Hour: boolean;
   minimumSleepMinutes: number;
+  sleepGoalMinutes: number;
 }

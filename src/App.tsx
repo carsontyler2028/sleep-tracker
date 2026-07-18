@@ -5,8 +5,7 @@ import Home from "./components/HomePage";
 import History from "./components/HistoryPage";
 import Settings from "./components/SettingsPage";
 import Navigation from "./components/Navigation";
-import AppLogo from "./components/AppLogo";
-import ConnectionStatus from "./components/ConnectionStatus";
+import Header from "./components/Header";
 
 import type { SleepSession, AppSettings } from "./types";
 
@@ -64,6 +63,7 @@ function App() {
             darkMode: true,
             use24Hour: false,
             minimumSleepMinutes: 15,
+            sleepGoalMinutes: 480,
           };
 
     });
@@ -291,15 +291,7 @@ function App() {
 
       <div className="card">
 
-
-        <header className="app-header">
-
-          <AppLogo />
-
-          <ConnectionStatus />
-
-        </header>
-
+  <Header />
 
 
         <div className="content">
@@ -316,13 +308,13 @@ function App() {
 
                 lastNight={lastNight}
 
+                settings={settings}
+
                 onStartSleep={startSleep}
 
                 onWakeUp={wakeUp}
 
-                formatDuration={
-                  formatDuration
-                }
+                formatDuration={formatDuration}
 
               />
 
