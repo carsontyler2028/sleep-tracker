@@ -137,6 +137,8 @@ body {
 
 .infoCard {
 
+  position: relative;
+
   background:#eee;
 
   padding:20px;
@@ -158,6 +160,8 @@ body {
 
 
 .session {
+
+  position: relative;
 
   background:#eee;
 
@@ -540,5 +544,53 @@ small {
     flex-direction:column;
 
   }
+
+}
+
+
+
+.deleteButton {
+
+  position: absolute;
+
+  top: 12px;
+
+  right: 12px;
+
+  width: 34px;
+
+  height: 34px;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-size: 20px;
+
+  color: #e53935;
+
+  transition: transform 0.15s ease;
+
+}
+
+.deleteButton:hover {
+
+  transform: scale(1.15);
+
+}
+
+
+
+.analyticsRow {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  padding:8px 0;
+
+  border-bottom:1px solid #888;
 
 }

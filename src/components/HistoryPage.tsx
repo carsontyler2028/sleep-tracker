@@ -7,7 +7,6 @@ interface HistoryProps {
   onDelete: (id: number) => void;
 }
 
-
 function History({
   sessions,
   weeklyAverage,
@@ -15,9 +14,13 @@ function History({
   onDelete,
 }: HistoryProps) {
 
-
   const lastNight = sessions[0];
 
+  function confirmDelete(id: number) {
+    if (window.confirm("Delete this sleep session?")) {
+      onDelete(id);
+    }
+  }
 
   return (
     <>
@@ -26,49 +29,38 @@ function History({
         History
       </h1>
 
-
-
       {lastNight && (
-
         <div className="infoCard">
+
+          <button
+            className="deleteButton"
+            onClick={() => confirmDelete(lastNight.id)}
+          >
+            🗑️
+          </button>
 
           <h3>
             Last Night
           </h3>
 
-
           <h2>
-            {
-              formatDuration(
-                lastNight.durationMinutes
-              )
-            }
+            {formatDuration(lastNight.durationMinutes)}
           </h2>
-
 
           <p>
             {lastNight.date}
           </p>
 
-
           <p>
             Start: {lastNight.startTime}
           </p>
-
 
           <p>
             End: {lastNight.endTime}
           </p>
 
-
         </div>
-
       )}
-
-
-
-
-
 
       <div className="infoCard">
 
@@ -76,74 +68,44 @@ function History({
           Weekly Average
         </h3>
 
-
         <h2>
-          {
-            formatDuration(
-              weeklyAverage
-            )
-          }
+          {formatDuration(weeklyAverage)}
         </h2>
 
-
       </div>
-
-
-
-
-
-
 
       <h3>
         Previous Nights
       </h3>
 
+      {sessions.slice(1).map((session) => (
 
+        <div
+          className="session"
+          key={session.id}
+        >
 
-
-      {
-        sessions.slice(1).map((session) => (
-
-          <div
-            className="session"
-            key={session.id}
+          <button
+            className="deleteButton"
+            onClick={() => confirmDelete(session.id)}
           >
+            🗑️
+          </button>
 
+          <b>
+            {session.date}
+          </b>
 
-            <button
-              className="deleteButton"
-              onClick={() =>
-                onDelete(session.id)
-              }
-            >
-              🗑️
-            </button>
+          <p>
+            {formatDuration(session.durationMinutes)}
+          </p>
 
+        </div>
 
-
-            <b>
-              {session.date}
-            </b>
-
-
-            <p>
-              {
-                formatDuration(
-                  session.durationMinutes
-                )
-              }
-            </p>
-
-
-          </div>
-
-        ))
-      }
-
+      ))}
 
     </>
   );
 }
-
 
 export default History;

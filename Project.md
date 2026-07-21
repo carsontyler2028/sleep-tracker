@@ -16,9 +16,9 @@ v0.1
     Y    -Local storage
 v0.2
     Phase 2: Improve and prep for beta launch
-    N    -Improve settings
-    N    -Improve history cards
-    N    -Delete confermation
+    Y    -Improve settings
+    Y    -Improve history cards
+    Y    -Delete confermation
 v0.3    
     Phase 3: Better Statistics/add beta test improvements
     N    -Monthly averages
@@ -26,7 +26,6 @@ v0.3
     N    -Average wake time
     N    -Consistancy score
     N    -Longest streak
-    N    -Calander view
 Launch v1.0
     Phase 4: Accounts and friends
     N    -Create account
@@ -42,7 +41,7 @@ Launch v1.0
             >Compare weekly averages
             >Compare consistency
     N    -Privacy settings
-v1.4    
+v1.1    
     Phase 5:
     N    -Leaderboards
             >Show the top 5 among your friends

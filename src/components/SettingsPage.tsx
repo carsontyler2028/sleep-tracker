@@ -41,10 +41,7 @@ function Settings({
 
 
 
-
-
       <div className="settingsSleepRow">
-
 
 
         <div className="infoCard">
@@ -52,7 +49,6 @@ function Settings({
           <h3>
             Sleep Goal
           </h3>
-
 
 
           <div className="sleepWheel">
@@ -126,15 +122,11 @@ function Settings({
 
 
 
-
-
         <div className="infoCard">
-
 
           <h3>
             Minimum Sleep Length
           </h3>
-
 
 
           <WheelPicker
@@ -149,14 +141,11 @@ function Settings({
               )
             }
 
-
             value={
               settings.minimumSleepMinutes
             }
 
-
             suffix="m"
-
 
             onChange={(minutes) =>
               onChange({
@@ -176,10 +165,6 @@ function Settings({
 
 
       </div>
-
-
-
-
 
 
 
@@ -221,8 +206,6 @@ function Settings({
 
 
 
-
-
       <div className="infoCard">
 
         <label>
@@ -252,6 +235,205 @@ function Settings({
           />
 
         </label>
+
+      </div>
+
+
+
+
+
+
+      <div className="infoCard">
+
+        <h3>
+          Consistency Settings
+        </h3>
+
+
+
+        <label>
+
+          Default Time Period
+
+
+          <select
+
+            value={
+              settings.consistencyDefaultPeriod
+            }
+
+            onChange={(e) =>
+              onChange({
+
+                ...settings,
+
+                consistencyDefaultPeriod:
+                  e.target.value as
+                  "7" | "30" | "all"
+
+              })
+            }
+
+          >
+
+            <option value="30">
+              Last 30 Days
+            </option>
+
+            <option value="7">
+              Last 7 Days
+            </option>
+
+            <option value="all">
+              All Time
+            </option>
+
+
+          </select>
+
+        </label>
+
+
+      </div>
+
+
+
+
+
+
+      <div className="infoCard">
+
+        <h3>
+          Show Consistency Cards
+        </h3>
+
+
+
+        <label>
+
+          Last 7 Days
+
+          <input
+            type="checkbox"
+
+            checked={
+              settings.showConsistency7
+            }
+
+            onChange={(e) =>
+              onChange({
+
+                ...settings,
+
+                showConsistency7:
+                  e.target.checked
+
+              })
+            }
+
+          />
+
+        </label>
+
+
+
+        <br />
+
+
+
+        <label>
+
+          Last 30 Days
+
+          <input
+            type="checkbox"
+
+            checked={
+              settings.showConsistency30
+            }
+
+            onChange={(e) =>
+              onChange({
+
+                ...settings,
+
+                showConsistency30:
+                  e.target.checked
+
+              })
+            }
+
+          />
+
+        </label>
+
+
+
+        <br />
+
+
+
+        <label>
+
+          All Time
+
+          <input
+            type="checkbox"
+
+            checked={
+              settings.showConsistencyAll
+            }
+
+            onChange={(e) =>
+              onChange({
+
+                ...settings,
+
+                showConsistencyAll:
+                  e.target.checked
+
+              })
+            }
+
+          />
+
+        </label>
+
+
+      </div>
+
+
+
+
+
+
+      <div className="infoCard">
+
+        <h3>
+          Consistency Calculation
+        </h3>
+
+
+        <p>
+          Bedtime: 40%
+        </p>
+
+
+        <p>
+          Wake Time: 40%
+        </p>
+
+
+        <p>
+          Sleep Duration: 20%
+        </p>
+
+
+        <p>
+          Last 30 days removes large outliers.
+          All time uses stricter filtering.
+        </p>
+
 
       </div>
 

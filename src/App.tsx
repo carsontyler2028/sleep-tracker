@@ -6,11 +6,16 @@ import History from "./components/HistoryPage";
 import Settings from "./components/SettingsPage";
 import Navigation from "./components/Navigation";
 import Header from "./components/Header";
+import Analytics from "./components/AnalyticsPage";
 
 import type { SleepSession, AppSettings } from "./types";
 
 
-type Page = "home" | "history" | "settings";
+type Page =
+  | "home"
+  | "history"
+  | "analytics"
+  | "settings";
 
 
 function formatDuration(minutes: number) {
@@ -19,14 +24,17 @@ function formatDuration(minutes: number) {
     return "0h 00m";
   }
 
-  const hours = Math.floor(minutes / 60);
+  const hours =
+    Math.floor(minutes / 60);
 
-  const mins = Math.floor(minutes % 60);
+  const mins =
+    Math.floor(minutes % 60);
 
   return `${hours}h ${mins
     .toString()
     .padStart(2, "0")}m`;
 }
+
 
 
 function formatTime(
@@ -43,10 +51,13 @@ function formatTime(
 }
 
 
+
 function App() {
+
 
   const [page, setPage] =
     useState<Page>("home");
+
 
 
   const [settings, setSettings] =
@@ -55,18 +66,35 @@ function App() {
       const saved =
         localStorage.getItem("settings");
 
+
       return saved
 
         ? JSON.parse(saved)
 
         : {
+
             darkMode: true,
+
             use24Hour: false,
+
             minimumSleepMinutes: 15,
+
             sleepGoalMinutes: 480,
+
+
+            consistencyDefaultPeriod: "30",
+
+            showConsistency7: true,
+
+            showConsistency30: true,
+
+            showConsistencyAll: true,
+
           };
 
     });
+
+
 
 
   const [sessions, setSessions] =
@@ -77,11 +105,14 @@ function App() {
           "sleepSessions"
         );
 
+
       return saved
         ? JSON.parse(saved)
         : [];
 
     });
+
+
 
 
   const [sleepStart, setSleepStart] =
@@ -92,6 +123,7 @@ function App() {
           "sleepStart"
         );
 
+
       return saved
         ? new Date(saved)
         : null;
@@ -99,8 +131,12 @@ function App() {
     });
 
 
+
+
   const sleeping =
     sleepStart !== null;
+
+
 
 
   function updateSettings(
@@ -108,6 +144,7 @@ function App() {
   ) {
 
     setSettings(newSettings);
+
 
     localStorage.setItem(
       "settings",
@@ -117,11 +154,16 @@ function App() {
   }
 
 
+
+
   function startSleep() {
 
-    const now = new Date();
+    const now =
+      new Date();
+
 
     setSleepStart(now);
+
 
     localStorage.setItem(
       "sleepStart",
@@ -131,12 +173,17 @@ function App() {
   }
 
 
+
+
+
   function wakeUp() {
 
     if (!sleepStart) return;
 
+
     const end =
       new Date();
+
 
 
     const durationMinutes =
@@ -151,6 +198,8 @@ function App() {
       );
 
 
+
+
     if (
       durationMinutes
       <
@@ -161,16 +210,31 @@ function App() {
         "sleepStart"
       );
 
+
       setSleepStart(null);
+
 
       return;
 
     }
 
 
+
+
+
     const session: SleepSession = {
 
-      id: Date.now(),
+      id:
+        Date.now(),
+
+
+      startTimestamp:
+        sleepStart.toISOString(),
+
+
+      endTimestamp:
+        end.toISOString(),
+
 
       startTime:
         formatTime(
@@ -178,33 +242,50 @@ function App() {
           settings.use24Hour
         ),
 
+
       endTime:
         formatTime(
           end,
           settings.use24Hour
         ),
 
+
       date:
         end.toLocaleDateString(),
+
 
       durationMinutes,
 
     };
 
 
+
+
+
     const updated = [
+
       session,
+
       ...sessions,
+
     ];
+
+
 
 
     setSessions(updated);
 
 
+
     localStorage.setItem(
+
       "sleepSessions",
+
       JSON.stringify(updated)
+
     );
+
+
 
 
     localStorage.removeItem(
@@ -217,9 +298,14 @@ function App() {
   }
 
 
+
+
+
+
   function deleteSession(
     id: number
   ) {
+
 
     const updated =
       sessions.filter(
@@ -228,15 +314,24 @@ function App() {
       );
 
 
+
     setSessions(updated);
 
 
+
     localStorage.setItem(
+
       "sleepSessions",
+
       JSON.stringify(updated)
+
     );
 
   }
+
+
+
+
 
 
   const weeklyAverage =
@@ -255,6 +350,7 @@ function App() {
                 total,
                 session
               ) =>
+
                 total
                 +
                 session.durationMinutes,
@@ -275,26 +371,47 @@ function App() {
       : 0;
 
 
+
+
+
+
   const lastNight =
     sessions[0];
 
 
+
+
+
+
   return (
 
+
     <div
+
       className={
+
         settings.darkMode
+
           ? "app dark"
+
           : "app"
+
       }
+
     >
+
 
       <div className="card">
 
-  <Header />
+
+        <Header />
+
 
 
         <div className="content">
+
+
+
 
 
           {
@@ -314,12 +431,18 @@ function App() {
 
                 onWakeUp={wakeUp}
 
-                formatDuration={formatDuration}
+                formatDuration={
+                  formatDuration
+                }
 
               />
 
             )
           }
+
+
+
+
 
 
 
@@ -349,6 +472,35 @@ function App() {
 
 
 
+
+
+
+
+          {
+            page === "analytics" && (
+
+              <Analytics
+
+                sessions={sessions}
+
+                settings={settings}
+
+                formatDuration={
+                  formatDuration
+                }
+
+              />
+
+            )
+          }
+
+
+
+
+
+
+
+
           {
             page === "settings" && (
 
@@ -366,7 +518,15 @@ function App() {
           }
 
 
+
+
+
+
         </div>
+
+
+
+
 
 
 
@@ -379,13 +539,19 @@ function App() {
         />
 
 
+
+
+
       </div>
 
+
     </div>
+
 
   );
 
 }
+
 
 
 export default App;

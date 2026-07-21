@@ -1,4 +1,8 @@
-type Page = "home" | "history" | "settings";
+type Page =
+  | "home"
+  | "history"
+  | "analytics"
+  | "settings";
 
 
 interface NavigationProps {
@@ -35,6 +39,17 @@ function Navigation({
         📅
         <small>
           History
+        </small>
+      </button>
+
+
+      <button
+        className={page === "analytics" ? "active" : ""}
+        onClick={() => setPage("analytics")}
+      >
+        📊
+        <small>
+          Analytics
         </small>
       </button>
 
