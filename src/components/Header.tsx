@@ -13,7 +13,7 @@ function Header() {
       <div className="header-info">
         <h1>Sleep Tracker</h1>
         <p className="version">
-          v0.2 Beta
+          v0.3 Beta
         </p>
 
         <ConnectionStatus />
