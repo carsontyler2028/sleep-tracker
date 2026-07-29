@@ -12,6 +12,7 @@ export function getTotalNights(
   return sessions.length;
 }
 
+
 export function getTotalSleepMinutes(
   sessions: SleepSession[]
 ): number {
@@ -21,6 +22,7 @@ export function getTotalSleepMinutes(
     0
   );
 }
+
 
 export function getTotalSleepHours(
   sessions: SleepSession[]
@@ -32,6 +34,7 @@ export function getTotalSleepHours(
     ).toFixed(1)
   );
 }
+
 
 export function getAverageSleep(
   sessions: SleepSession[]
@@ -48,6 +51,7 @@ export function getAverageSleep(
 
 }
 
+
 export function getAverageSleepLast7(
   sessions: SleepSession[]
 ): number {
@@ -58,6 +62,7 @@ export function getAverageSleepLast7(
 
 }
 
+
 export function getAverageSleepLast30(
   sessions: SleepSession[]
 ): number {
@@ -67,6 +72,7 @@ export function getAverageSleepLast30(
   );
 
 }
+
 
 /*
 ==================================================
@@ -94,6 +100,7 @@ export function getLongestSleep(
   );
 
 }
+
 
 export function getShortestSleep(
   sessions: SleepSession[]
@@ -130,14 +137,19 @@ export function getAverageSleepByWeekday(
       return;
     }
 
-    const date = new Date(session.endTimestamp);
+    const date =
+      new Date(
+        session.endTimestamp
+      );
 
-    const day = date.getDay();
+    const day =
+      date.getDay();
 
     totals[day] += session.durationMinutes;
     counts[day]++;
 
   });
+
 
   const dayNames = [
     "Sunday",
@@ -149,8 +161,10 @@ export function getAverageSleepByWeekday(
     "Saturday",
   ];
 
+
   return dayNames.map((day, index) => ({
     day,
+
     average:
       counts[index] === 0
         ? 0
@@ -158,6 +172,7 @@ export function getAverageSleepByWeekday(
             totals[index] /
             counts[index]
           ),
+
   }));
 
 }
@@ -168,10 +183,13 @@ export function getSessionsLast30Days(
   sessions: SleepSession[]
 ): SleepSession[] {
 
-  const now = new Date();
+  const now =
+    new Date();
+
 
   const thirtyDaysAgo =
     new Date();
+
 
   thirtyDaysAgo.setDate(
     now.getDate() - 30
@@ -235,51 +253,120 @@ export function getTotalSleepLast30Days(
 
 
 
+/*
+==================================================
+TIME STATISTICS
+==================================================
+*/
+
+
+function getCircularAverage(
+  minutes: number[]
+): number {
+
+  if (minutes.length === 0) {
+    return 0;
+  }
+
+
+  const angles =
+    minutes.map(
+      (value) =>
+        (
+          value /
+          1440
+        )
+        *
+        Math.PI
+        *
+        2
+    );
+
+
+  const sin =
+    angles.reduce(
+      (sum, value) =>
+        sum + Math.sin(value),
+      0
+    )
+    /
+    angles.length;
+
+
+  const cos =
+    angles.reduce(
+      (sum, value) =>
+        sum + Math.cos(value),
+      0
+    )
+    /
+    angles.length;
+
+
+  let average =
+    Math.atan2(
+      sin,
+      cos
+    )
+    /
+    (
+      Math.PI *
+      2
+    )
+    *
+    1440;
+
+
+  if (average < 0) {
+    average += 1440;
+  }
+
+
+  return Math.round(
+    average
+  );
+
+}
+
+
+
 export function getAverageBedtime(
   sessions: SleepSession[]
 ): number | null {
 
-  const validSessions =
-    sessions.filter(
-      (session) =>
-        session.startTimestamp
-    );
+  const values =
+    sessions
+      .filter(
+        (session) =>
+          session.startTimestamp
+      )
+      .map(
+        (session) => {
+
+          const date =
+            new Date(
+              session.startTimestamp!
+            );
 
 
-  if (validSessions.length === 0) {
+          return (
+            date.getHours() *
+            60
+            +
+            date.getMinutes()
+          );
+
+        }
+      );
+
+
+  if (values.length === 0) {
     return null;
   }
 
 
-  const totalMinutes =
-    validSessions.reduce(
-      (
-        total,
-        session
-      ) => {
-
-        const date =
-          new Date(
-            session.startTimestamp!
-          );
-
-
-        return (
-          total +
-          (
-            date.getHours() * 60
-          ) +
-          date.getMinutes()
-        );
-
-      },
-      0
-    );
-
-
-  return Math.round(
-    totalMinutes /
-    validSessions.length
+  return getCircularAverage(
+    values
   );
 
 }
@@ -290,37 +377,39 @@ export function getAverageWakeTime(
   sessions: SleepSession[]
 ): number | null {
 
-  const validSessions =
-    sessions.filter(
-      (session) => session.endTimestamp
-    );
+  const values =
+    sessions
+      .filter(
+        (session) =>
+          session.endTimestamp
+      )
+      .map(
+        (session) => {
 
-  if (validSessions.length === 0) {
+          const date =
+            new Date(
+              session.endTimestamp!
+            );
+
+
+          return (
+            date.getHours() *
+            60
+            +
+            date.getMinutes()
+          );
+
+        }
+      );
+
+
+  if (values.length === 0) {
     return null;
   }
 
-  const totalMinutes =
-    validSessions.reduce(
-      (total, session) => {
 
-        const date =
-          new Date(
-            session.endTimestamp!
-          );
-
-        return (
-          total +
-          date.getHours() * 60 +
-          date.getMinutes()
-        );
-
-      },
-      0
-    );
-
-  return Math.round(
-    totalMinutes /
-    validSessions.length
+  return getCircularAverage(
+    values
   );
 
 }

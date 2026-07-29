@@ -7,6 +7,7 @@ import {
   getAverageSleepByWeekday,
   getAverageSleepLast30Days,
   getAverageBedtime,
+  getAverageWakeTime,
 } from "../Utilities/analytics";
 
 import {
@@ -65,6 +66,7 @@ function Analytics({
     return date.toLocaleTimeString([], {
       hour: "numeric",
       minute: "2-digit",
+      hour12: !settings.use24Hour,
     });
 
   }
@@ -104,6 +106,12 @@ function Analytics({
 
   const averageBedtime =
     getAverageBedtime(
+      sessions
+    );
+
+
+  const averageWakeTime =
+    getAverageWakeTime(
       sessions
     );
 
@@ -308,6 +316,27 @@ function Analytics({
 
 
 
+      <div className="infoCard">
+
+        <h3>
+          Average Wake Time
+        </h3>
+
+
+        <h2>
+          {
+            formatClockTime(
+              averageWakeTime
+            )
+          }
+        </h2>
+
+      </div>
+
+
+
+
+
       {
         settings.showConsistency30 && (
 
@@ -320,9 +349,7 @@ function Analytics({
             }
 
             data={
-              settings.consistencyDefaultPeriod === "30"
-                ? consistency30
-                : consistency30
+              consistency30
             }
 
           />
