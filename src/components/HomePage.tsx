@@ -14,7 +14,6 @@ interface HomeProps {
   formatDuration: (minutes: number) => string;
 }
 
-
 function Home({
   sleeping,
   sleepStart,
@@ -25,9 +24,7 @@ function Home({
   formatDuration,
 }: HomeProps) {
 
-
   const [elapsed, setElapsed] = useState("0h 00m");
-
 
   useEffect(() => {
 
@@ -36,9 +33,7 @@ function Home({
       return;
     }
 
-
     const startTime = sleepStart;
-
 
     function updateTimer() {
 
@@ -52,16 +47,13 @@ function Home({
         60000
       );
 
-
       setElapsed(
         formatDuration(minutes)
       );
 
     }
 
-
     updateTimer();
-
 
     const timer =
       setInterval(
@@ -69,10 +61,8 @@ function Home({
         10000
       );
 
-
     return () =>
       clearInterval(timer);
-
 
   }, [
     sleeping,
@@ -94,12 +84,9 @@ function Home({
           (
             sleepMinutes /
             settings.sleepGoalMinutes
-          )
-          *
-          100
+          ) * 100
         )
       : 0;
-
 
 
   const barPercent =
@@ -109,17 +96,24 @@ function Home({
     );
 
 
+  let goalColor = "#ef4444";
+
+  if (goalPercent >= 80) {
+    goalColor = "#22c55e";
+  } else if (goalPercent >= 50) {
+    goalColor = "#eab308";
+  }
+
+
 
   return (
     <>
 
       <div className="infoCard sleepCard">
 
-
         <h3>
           Sleep Tracker
         </h3>
-
 
         <button
           className="mainButton"
@@ -137,8 +131,6 @@ function Home({
           }
 
         </button>
-
-
 
         {
           sleeping && sleepStart && (
@@ -165,51 +157,60 @@ function Home({
           )
         }
 
-
       </div>
 
-
-
-
-
       {
-        lastNight && (
+  lastNight ? (
 
-          <div className="infoCard">
+    <div className="infoCard">
 
-            <h3>
-              Last Sleep
-            </h3>
+      <h3>
+        Last Sleep
+      </h3>
 
+      <h2>
+        {
+          formatDuration(
+            lastNight.durationMinutes
+          )
+        }
+      </h2>
 
-            <h2>
-              {
-                formatDuration(
-                  lastNight.durationMinutes
-                )
-              }
-            </h2>
+      <p>
+        {lastNight.date}
+      </p>
 
+    </div>
 
-            <p>
-              {lastNight.date}
-            </p>
+  ) : (
 
-          </div>
+    <div className="infoCard">
 
-        )
-      }
+      <h3>
+        Welcome
+      </h3>
 
+      <p>
+        Track your sleep by tapping
+        Start Sleep before bed and
+        Wake Up when you get up.
+      </p>
 
+      <p>
+        Your first sleep session
+        will appear here.
+      </p>
 
+    </div>
 
+  )
+}
 
       <div className="infoCard">
 
         <h3>
           Sleep Goal
         </h3>
-
 
         <h2>
 
@@ -229,21 +230,17 @@ function Home({
 
         </h2>
 
-
-
         <div className="sleepGoalRow">
 
-
           <div className="sleepGoalBar">
-
 
             <div
               className="sleepGoalFill"
               style={{
-                width: `${(barPercent / 125) * 100}%`
+                width: `${(barPercent / 125) * 100}%`,
+                backgroundColor: goalColor,
               }}
             />
-
 
             <div
               className="sleepGoalMarker"
@@ -258,10 +255,7 @@ function Home({
 
             </div>
 
-
           </div>
-
-
 
           <span className="sleepGoalPercent">
 
@@ -269,16 +263,12 @@ function Home({
 
           </span>
 
-
         </div>
 
-
       </div>
-
 
     </>
   );
 }
-
 
 export default Home;

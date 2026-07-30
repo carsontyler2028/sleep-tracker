@@ -594,3 +594,70 @@ small {
   border-bottom:1px solid #888;
 
 }
+
+
+
+.unlockProgress {
+  width: 100%;
+  height: 10px;
+  background: #1f2937;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.unlockProgressFill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+
+
+.settingsSectionTitle {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.settingsSectionTitle {
+  text-align: center;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+
+
+.settingsLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.settingsLink:last-child {
+  border-bottom: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalCard {
+  width: min(500px, 90vw);
+  background: #1f2937;
+  border-radius: 16px;
+  padding: 24px;
+}

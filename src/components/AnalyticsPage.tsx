@@ -195,22 +195,35 @@ function Analytics({
 
           ) : (
 
-            <>
+           <>
+  <h2>
+    🔒 Locked
+  </h2>
 
-              <h2>
-                Insufficient Data
-              </h2>
+  <p>
+    Track {data.requiredSessions} nights to unlock
+  </p>
 
+  <div className="unlockProgress">
+    <div
+      className="unlockProgressFill"
+      style={{
+        width: `${Math.min(
+          (data.sessionsUsed / data.requiredSessions) * 100,
+          100
+        )}%`,
+      }}
+    />
+  </div>
 
-              <p>
-                {data.sessionsUsed}
-                /
-                {data.requiredSessions}
-                {" "}
-                sessions
-              </p>
-
-            </>
+  <p>
+    {data.sessionsUsed}
+    /
+    {data.requiredSessions}
+    {" "}
+    nights recorded
+  </p>
+</>
 
           )
 
@@ -253,22 +266,6 @@ function Analytics({
 
       </div>
 
-
-
-
-
-      <div className="infoCard">
-
-        <h3>
-          Nights Tracked
-        </h3>
-
-
-        <h2>
-          {totalNights}
-        </h2>
-
-      </div>
 
 
 
@@ -423,6 +420,22 @@ function Analytics({
 
       </div>
 
+
+
+
+
+      <div className="infoCard">
+
+        <h3>
+          Nights Tracked
+        </h3>
+
+
+        <h2>
+          {totalNights}
+        </h2>
+
+      </div>
 
 
 

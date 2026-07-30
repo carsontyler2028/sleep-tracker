@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { APP_VERSION } from "./version";
 
 import Home from "./components/HomePage";
 import History from "./components/HistoryPage";
@@ -9,7 +10,6 @@ import Header from "./components/Header";
 import Analytics from "./components/AnalyticsPage";
 
 import type { SleepSession, AppSettings } from "./types";
-
 
 type Page =
   | "home"
@@ -59,6 +59,36 @@ function App() {
     useState<Page>("home");
 
 
+  const [showWhatsNew, setShowWhatsNew] =
+    useState(false);
+
+
+
+  useEffect(() => {
+
+    const lastSeenVersion =
+      localStorage.getItem(
+        "lastSeenVersion"
+      );
+
+
+    if (
+      lastSeenVersion !== APP_VERSION
+    ) {
+
+      setShowWhatsNew(true);
+
+      localStorage.setItem(
+        "lastSeenVersion",
+        APP_VERSION
+      );
+
+    }
+
+  }, []);
+
+
+
 
   const [settings, setSettings] =
     useState<AppSettings>(() => {
@@ -81,7 +111,6 @@ function App() {
 
             sleepGoalMinutes: 480,
 
-
             consistencyDefaultPeriod: "30",
 
             showConsistency7: true,
@@ -93,6 +122,7 @@ function App() {
           };
 
     });
+
 
 
 
@@ -115,6 +145,7 @@ function App() {
 
 
 
+
   const [sleepStart, setSleepStart] =
     useState<Date | null>(() => {
 
@@ -133,8 +164,10 @@ function App() {
 
 
 
+
   const sleeping =
     sleepStart !== null;
+
 
 
 
@@ -145,13 +178,13 @@ function App() {
 
     setSettings(newSettings);
 
-
     localStorage.setItem(
       "settings",
       JSON.stringify(newSettings)
     );
 
   }
+
 
 
 
@@ -185,7 +218,6 @@ function App() {
       new Date();
 
 
-
     const durationMinutes =
       Math.floor(
         (
@@ -199,10 +231,8 @@ function App() {
 
 
 
-
     if (
-      durationMinutes
-      <
+      durationMinutes <
       settings.minimumSleepMinutes
     ) {
 
@@ -210,9 +240,7 @@ function App() {
         "sleepStart"
       );
 
-
       setSleepStart(null);
-
 
       return;
 
@@ -227,14 +255,11 @@ function App() {
       id:
         Date.now(),
 
-
       startTimestamp:
         sleepStart.toISOString(),
 
-
       endTimestamp:
         end.toISOString(),
-
 
       startTime:
         formatTime(
@@ -242,17 +267,14 @@ function App() {
           settings.use24Hour
         ),
 
-
       endTime:
         formatTime(
           end,
           settings.use24Hour
         ),
 
-
       date:
         end.toLocaleDateString(),
-
 
       durationMinutes,
 
@@ -272,7 +294,6 @@ function App() {
 
 
 
-
     setSessions(updated);
 
 
@@ -284,7 +305,6 @@ function App() {
       JSON.stringify(updated)
 
     );
-
 
 
 
@@ -333,7 +353,6 @@ function App() {
 
 
 
-
   const weeklyAverage =
 
     sessions.length > 0
@@ -351,8 +370,7 @@ function App() {
                 session
               ) =>
 
-                total
-                +
+                total +
                 session.durationMinutes,
 
               0
@@ -374,7 +392,6 @@ function App() {
 
 
 
-
   const lastNight =
     sessions[0];
 
@@ -382,36 +399,90 @@ function App() {
 
 
 
-
   return (
 
-
     <div
-
       className={
-
         settings.darkMode
-
           ? "app dark"
-
           : "app"
-
       }
-
     >
+
+
+      {showWhatsNew && (
+
+        <div
+          className="modalOverlay"
+          onClick={() =>
+            setShowWhatsNew(false)
+          }
+        >
+
+          <div
+            className="modalCard"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <h2>
+              What's New
+            </h2>
+
+
+            <h3>
+              Version {APP_VERSION}
+            </h3>
+
+
+            <p>
+              • Added Average Wake Time
+            </p>
+
+            <p>
+              • Added sleep goal color progression
+            </p>
+
+            <p>
+              • Added consistency unlock progress
+            </p>
+
+            <p>
+              • Reorganized settings page
+            </p>
+
+            <p>
+              • Updated PWA app icons
+            </p>
+
+
+            <button
+              className="mainButton"
+              onClick={() =>
+                setShowWhatsNew(false)
+              }
+            >
+              Close
+            </button>
+
+
+          </div>
+
+        </div>
+
+      )}
+
+
+
 
 
       <div className="card">
 
-
         <Header />
 
 
-
         <div className="content">
-
-
-
 
 
           {
@@ -439,9 +510,6 @@ function App() {
 
             )
           }
-
-
-
 
 
 
@@ -474,8 +542,6 @@ function App() {
 
 
 
-
-
           {
             page === "analytics" && (
 
@@ -498,9 +564,6 @@ function App() {
 
 
 
-
-
-
           {
             page === "settings" && (
 
@@ -518,14 +581,7 @@ function App() {
           }
 
 
-
-
-
-
         </div>
-
-
-
 
 
 
@@ -539,19 +595,13 @@ function App() {
         />
 
 
-
-
-
       </div>
 
 
     </div>
 
-
   );
 
 }
-
-
 
 export default App;
