@@ -661,3 +661,124 @@ small {
   border-radius: 16px;
   padding: 24px;
 }
+
+.authPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.authLogo {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.authTitle {
+  margin-bottom: 4px;
+}
+
+.authSubtitle {
+  opacity: 0.75;
+  margin-bottom: 24px;
+}
+
+.authLink {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 12px;
+  opacity: 0.8;
+}
+
+.guestButton {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.authMessage {
+  margin-top: 12px;
+  opacity: 0.85;
+}
+
+.logoutButton {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+
+  background: transparent;
+
+  border: 1px solid #374151;
+  border-radius: 12px;
+
+  color: inherit;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logoutButton:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+
+.authPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.authLogo {
+  font-size: 4rem;
+  margin-bottom: 8px;
+}
+
+.authTitle {
+  margin-bottom: 6px;
+}
+
+.authSubtitle {
+  opacity: 0.75;
+  margin-bottom: 24px;
+}
+
+.authCard input {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.authLink {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.8;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.authLink:hover {
+  opacity: 1;
+}
+
+.guestButton {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.authMessage {
+  margin-top: 16px;
+  opacity: 0.85;
+}

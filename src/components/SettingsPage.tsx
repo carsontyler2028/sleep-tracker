@@ -1,18 +1,23 @@
 import { useState } from "react";
 import type { AppSettings } from "../types";
 import WheelPicker from "./WheelPicker";
+import {
+  APP_VERSION,
+  WHATS_NEW
+} from "../version";
 
 interface SettingsProps {
   settings: AppSettings;
-
-  onChange: (
-    settings: AppSettings
-  ) => void;
+  onChange: (settings: AppSettings) => void;
+  username: string | null;
+  onLogout: () => Promise<void>;
 }
 
-function Settings({
+function SettingsPage({
   settings,
   onChange,
+  username,
+  onLogout,
 }: SettingsProps) {
 
   const [showWhatsNew, setShowWhatsNew] =
@@ -347,91 +352,76 @@ function Settings({
 
       <div className="infoCard">
 
-  <h2 className="settingsSectionTitle">
-    About
-  </h2>
-
-  <div
-    className="settingsLink"
-    onClick={() =>
-      setShowWhatsNew(true)
-    }
-  >
-    What's New
-    <span>›</span>
-  </div>
-
-  <div className="settingsLink">
-    Version 0.3.1
-  </div>
-
-</div>
-
-
-
-{
-  showWhatsNew && (
-
-    <div
-      className="modalOverlay"
-      onClick={() =>
-        setShowWhatsNew(false)
-      }
-    >
-
-      <div
-        className="modalCard"
-        onClick={(e) =>
-          e.stopPropagation()
-        }
-      >
-
-        <h2>
-          What's New
+        <h2 className="settingsSectionTitle">
+          About
         </h2>
 
-        <h3>
-          Version 0.3.1
-        </h3>
-
-        <p>
-          • Added Average Wake Time
-        </p>
-
-        <p>
-          • Added sleep goal color progression
-        </p>
-
-        <p>
-          • Added consistency unlock progress
-        </p>
-
-        <p>
-          • Reorganized settings page
-        </p>
-
-        <p>
-          • Updated PWA app icons
-        </p>
-
-        <button
-          className="mainButton"
+        <div
+          className="settingsLink"
           onClick={() =>
-            setShowWhatsNew(false)
+            setShowWhatsNew(true)
           }
         >
-          Close
+          What's New
+          <span>›</span>
+        </div>
+
+        <div className="settingsLink">
+          Version {APP_VERSION}
+        </div>
+
+        <button
+          className="logoutButton"
+          onClick={onLogout}
+        >
+          Sign Out
         </button>
 
       </div>
 
-    </div>
+      {showWhatsNew && (
 
-  )
-}
+        <div
+          className="modalOverlay"
+          onClick={() =>
+            setShowWhatsNew(false)
+          }
+        >
+
+          <div
+            className="modalCard"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <h2>
+              What's New
+            </h2>
+
+            {WHATS_NEW.map((item) => (
+              <p key={item}>
+                • {item}
+              </p>
+            ))}
+
+            <button
+              className="mainButton"
+              onClick={() =>
+                setShowWhatsNew(false)
+              }
+            >
+              Close
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
 
     </>
   );
 }
 
-export default Settings;
+export default SettingsPage;

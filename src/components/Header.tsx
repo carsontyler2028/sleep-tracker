@@ -2,7 +2,14 @@ import AppLogo from "./AppLogo";
 import ConnectionStatus from "./ConnectionStatus";
 import "./Header.css";
 
-function Header() {
+interface HeaderProps {
+  username: string | null;
+}
+
+function Header({
+  username,
+}: HeaderProps) {
+
   return (
     <header className="app-header">
 
@@ -11,12 +18,23 @@ function Header() {
       </div>
 
       <div className="header-info">
-        <h1>Sleep Tracker</h1>
+
+        <h1>
+          Sleep Tracker
+        </h1>
+
         <p className="version">
           v0.3 Beta
         </p>
 
+        {username && (
+          <p className="usernameDisplay">
+            {username}
+          </p>
+        )}
+
         <ConnectionStatus />
+
       </div>
 
     </header>

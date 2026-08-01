@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { APP_VERSION } from "./version";
+import {
+  APP_VERSION,
+  WHATS_NEW
+} from "./version";
 
 import Home from "./components/HomePage";
 import History from "./components/HistoryPage";
@@ -8,8 +11,17 @@ import Settings from "./components/SettingsPage";
 import Navigation from "./components/Navigation";
 import Header from "./components/Header";
 import Analytics from "./components/AnalyticsPage";
+import AuthPage from "./components/AuthPage";
 
-import type { SleepSession, AppSettings } from "./types";
+import { testSupabase } from "./testSupabase";
+
+import { useAuth } from "./hooks/useAuth";
+
+import type {
+  SleepSession,
+  AppSettings
+} from "./types";
+
 
 type Page =
   | "home"
@@ -20,19 +32,26 @@ type Page =
 
 function formatDuration(minutes: number) {
 
-  if (!Number.isFinite(minutes) || minutes < 0) {
+  if (
+    !Number.isFinite(minutes) ||
+    minutes < 0
+  ) {
     return "0h 00m";
   }
+
 
   const hours =
     Math.floor(minutes / 60);
 
+
   const mins =
     Math.floor(minutes % 60);
+
 
   return `${hours}h ${mins
     .toString()
     .padStart(2, "0")}m`;
+
 }
 
 
@@ -52,11 +71,27 @@ function formatTime(
 
 
 
+
 function App() {
+
+
+  const {
+    session,
+    username,
+    loading: authLoading,
+    signOut,
+  } = useAuth();
+
+
+
+  const [guestMode, setGuestMode] =
+    useState(false);
+
 
 
   const [page, setPage] =
     useState<Page>("home");
+
 
 
   const [showWhatsNew, setShowWhatsNew] =
@@ -64,37 +99,13 @@ function App() {
 
 
 
-  useEffect(() => {
-
-    const lastSeenVersion =
-      localStorage.getItem(
-        "lastSeenVersion"
-      );
-
-
-    if (
-      lastSeenVersion !== APP_VERSION
-    ) {
-
-      setShowWhatsNew(true);
-
-      localStorage.setItem(
-        "lastSeenVersion",
-        APP_VERSION
-      );
-
-    }
-
-  }, []);
-
-
-
-
   const [settings, setSettings] =
     useState<AppSettings>(() => {
 
       const saved =
-        localStorage.getItem("settings");
+        localStorage.getItem(
+          "settings"
+        );
 
 
       return saved
@@ -111,7 +122,7 @@ function App() {
 
             sleepGoalMinutes: 480,
 
-            consistencyDefaultPeriod: "30",
+            consistencyDefaultPeriod: "7",
 
             showConsistency7: true,
 
@@ -125,68 +136,125 @@ function App() {
 
 
 
+  useEffect(() => {
+
+    testSupabase();
 
 
-  const [sessions, setSessions] =
-    useState<SleepSession[]>(() => {
-
-      const saved =
-        localStorage.getItem(
-          "sleepSessions"
-        );
+    const lastSeenVersion =
+      localStorage.getItem(
+        "lastSeenVersion"
+      );
 
 
-      return saved
-        ? JSON.parse(saved)
-        : [];
+    if (
+      lastSeenVersion !== APP_VERSION
+    ) {
 
-    });
-
-
+      setShowWhatsNew(true);
 
 
+      localStorage.setItem(
+        "lastSeenVersion",
+        APP_VERSION
+      );
 
-  const [sleepStart, setSleepStart] =
-    useState<Date | null>(() => {
+    }
 
-      const saved =
-        localStorage.getItem(
-          "sleepStart"
-        );
-
-
-      return saved
-        ? new Date(saved)
-        : null;
-
-    });
+  }, []);
 
 
 
 
+  useEffect(() => {
 
-  const sleeping =
-    sleepStart !== null;
+    console.log(
+      "Auth state:",
+      {
+        session,
+        guestMode,
+        authLoading
+      }
+    );
 
 
+  }, [
+    session,
+    guestMode,
+    authLoading
+  ]);
 
 
-
-  function updateSettings(
+  const updateSettings = (
     newSettings: AppSettings
-  ) {
+  ) => {
 
-    setSettings(newSettings);
+    setSettings(
+      newSettings
+    );
+
 
     localStorage.setItem(
       "settings",
       JSON.stringify(newSettings)
     );
 
-  }
+  };
+
+
+const [sessions, setSessions] =
+  useState<SleepSession[]>(() => {
+
+    const saved =
+      localStorage.getItem(
+        "sleepSessions"
+      );
+
+    return saved
+      ? JSON.parse(saved)
+      : [];
+
+  });
+
+const [sleepStart, setSleepStart] =
+  useState<Date | null>(() => {
+
+    const saved =
+      localStorage.getItem(
+        "sleepStart"
+      );
+
+    return saved
+      ? new Date(saved)
+      : null;
+
+  });
+
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "settings",
+      JSON.stringify(settings)
+    );
+
+  }, [settings]);
 
 
 
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "sleepSessions",
+      JSON.stringify(sessions)
+    );
+
+  }, [sessions]);
+
+
+  const sleeping =
+    sleepStart !== null;
 
 
   function startSleep() {
@@ -389,16 +457,47 @@ function App() {
       : 0;
 
 
+const lastNight =
+  sessions[0];
+
+
+  if (authLoading) {
+
+  return (
+    <div className="app dark">
+
+      <h1>
+        Loading...
+      </h1>
+
+    </div>
+  );
+
+}
+
+
+if (
+  !session &&
+  !guestMode
+) {
 
 
 
-  const lastNight =
-    sessions[0];
+  return (
+    <div className="app dark">
 
+      <AuthPage
+        onGuest={() =>
+          setGuestMode(true)
+        }
+      />
 
+    </div>
+  );
 
+}
 
-
+  
   return (
 
     <div
@@ -436,25 +535,11 @@ function App() {
             </h3>
 
 
-            <p>
-              • Added Average Wake Time
-            </p>
-
-            <p>
-              • Added sleep goal color progression
-            </p>
-
-            <p>
-              • Added consistency unlock progress
-            </p>
-
-            <p>
-              • Reorganized settings page
-            </p>
-
-            <p>
-              • Updated PWA app icons
-            </p>
+            {WHATS_NEW.map((item) => (
+              <p key={item}>
+                 • {item}
+               </p>
+            ))}
 
 
             <button
@@ -479,8 +564,9 @@ function App() {
 
       <div className="card">
 
-        <Header />
-
+        <Header
+          username={username}
+        />
 
         <div className="content">
 
@@ -564,21 +650,18 @@ function App() {
 
 
 
-          {
-            page === "settings" && (
+       {
+        page === "settings" && (
 
-              <Settings
+           <Settings
+             settings={settings}
+             onChange={updateSettings}
+             username={username}
+             onLogout={signOut}
+           />
 
-                settings={settings}
-
-                onChange={
-                  updateSettings
-                }
-
-              />
-
-            )
-          }
+         )
+      }
 
 
         </div>
@@ -596,12 +679,8 @@ function App() {
 
 
       </div>
-
-
     </div>
-
   );
-
 }
 
 export default App;

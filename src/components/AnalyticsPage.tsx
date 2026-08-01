@@ -335,6 +335,23 @@ function Analytics({
 
 
       {
+        settings.showConsistency7 && (
+
+          <ConsistencyCard
+
+            title="Sleep Consistency (Last 7 Days)"
+
+            data={consistency7}
+
+          />
+
+        )
+      }
+
+
+
+
+      {
         settings.showConsistency30 && (
 
           <ConsistencyCard
@@ -354,23 +371,6 @@ function Analytics({
         )
       }
 
-
-
-
-
-      {
-        settings.showConsistency7 && (
-
-          <ConsistencyCard
-
-            title="Sleep Consistency (Last 7 Days)"
-
-            data={consistency7}
-
-          />
-
-        )
-      }
 
 
 
