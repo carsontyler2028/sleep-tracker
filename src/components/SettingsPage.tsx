@@ -16,7 +16,6 @@ interface SettingsProps {
 function SettingsPage({
   settings,
   onChange,
-  username,
   onLogout,
 }: SettingsProps) {
 
