@@ -1,13 +1,11 @@
 export interface SleepSession {
   id: number;
-
+  cloudId?: string;
   startTimestamp?: string;
   endTimestamp?: string;
-
   startTime: string;
   endTime: string;
   date: string;
-
   durationMinutes: number;
 }
 

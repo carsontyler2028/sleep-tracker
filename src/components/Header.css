@@ -36,3 +36,47 @@
   height: 60px;
   color: #4f8cff;
 }
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connection-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+}
+
+.connection-dot.connected,
+.connection-dot.synced {
+  background-color: #22c55e;
+}
+
+.connection-dot.offline,
+.connection-dot.error,
+.connection-dot.sync-error {
+  background-color: #ef4444;
+}
+
+.connection-dot.checking,
+.connection-dot.syncing {
+  background-color: #eab308;
+}
+
+/* Dark mode: bottom navigation text */
+.app.dark .bottom-navigation,
+.app.dark .bottom-nav,
+.app.dark .navigation {
+  color: #ffffff;
+}
+
+.app.dark .bottom-navigation button,
+.app.dark .bottom-nav button,
+.app.dark .navigation button {
+  color: #ffffff;
+}

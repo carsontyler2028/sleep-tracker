@@ -35,21 +35,14 @@ body {
 /* Main card */
 
 .card {
-
-  width:100%;
-
-  height:100%;
-
-  background:white;
-
-  position:relative;
-
-  overflow:hidden;
-
-  display:flex;
-
-  flex-direction:column;
-
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -81,19 +74,13 @@ body {
 /* Content area */
 
 .content {
-
-  flex:1;
-
-  overflow-y:auto;
-
-  padding:30px;
-
-  padding-bottom:100px;
-
-  box-sizing:border-box;
-
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 30px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
-
 
 
 
@@ -187,23 +174,16 @@ body {
 /* Navigation */
 
 nav {
-
-  position:absolute;
-
-  bottom:0;
-
-  left:0;
-
-  right:0;
-
-  height:75px;
-
-  display:flex;
-
-  background:white;
-
-  border-top:1px solid #ccc;
-
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75px;
+  flex-shrink: 0;
+  display: flex;
+  background: white;
+  border-top: 1px solid #ccc;
+  z-index: 10;
 }
 
 
@@ -331,36 +311,40 @@ small {
 
 
 /* Settings layout */
-
 .settingsSleepRow {
-
-  display:flex;
-
-  gap:20px;
-
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
 }
-
-
 
 .settingsSleepRow .infoCard {
-
-  flex:1;
-
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-
-
-
 /* Sleep wheels */
-
 .sleepWheel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
 
-  display:flex;
-
-  justify-content:center;
-
-  gap:10px;
-
+/* Keep wheel pickers contained within their cards */
+.wheelPicker {
+  position: relative;
+  width: 90px;
+  max-width: 100%;
+  height: 160px;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
 
 
@@ -781,4 +765,107 @@ small {
 .authMessage {
   margin-top: 16px;
   opacity: 0.85;
+}
+
+
+.authLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.authTitle {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.authSubtitle {
+  text-align: center;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.authCard {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+
+.authInput {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+  margin-bottom: 12px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 12px;
+
+  color: inherit;
+  font-size: 15px;
+}
+
+.authInput:focus {
+  outline: none;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(59, 130, 246, 0.2);
+}
+
+
+.authLinkButton {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #60a5fa;
+  cursor: pointer;
+  padding: 10px;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.authLinkButton:hover {
+  text-decoration: underline;
+}
+
+.guestButton {
+  width: 100%;
+  margin-top: 12px;
+
+  background: transparent;
+
+  border: 1px solid
+    rgba(255,255,255,0.15);
+
+  border-radius: 12px;
+
+  color: inherit;
+
+  padding: 12px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.guestButton:hover {
+  background:
+    rgba(255,255,255,0.05);
+}
+
+/* Dark mode bottom navigation */
+.dark nav button {
+  color: #ffffff;
+}
+
+/* Keep the navigation readable in light mode */
+nav button {
+  color: #000000;
 }

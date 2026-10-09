@@ -28,8 +28,13 @@ export function useAuth(): AuthState {
       return;
     }
 
+    const savedUsername =
+      currentSession.user.user_metadata?.username;
+
     setUsername(
-      currentSession.user.email ?? null
+      savedUsername ||
+      currentSession.user.email ||
+      null
     );
   }
 

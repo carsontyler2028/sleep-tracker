@@ -1,36 +1,84 @@
 import { useEffect, useState } from "react";
 
+export type CloudSyncStatus =
+| "idle"
+| "syncing"
+| "synced"
+| "error";
+
+interface ConnectionStatusProps {
+syncStatus: CloudSyncStatus;
+}
+
 type ConnectionState = "connected" | "offline" | "checking";
 
-export default function ConnectionStatus() {
-  const [status, setStatus] = useState<ConnectionState>("checking");
+export default function ConnectionStatus({
+syncStatus,
+}: ConnectionStatusProps) {
+const [connection, setConnection] =
+useState<ConnectionState>("checking");
 
-  useEffect(() => {
-    const updateConnection = () => {
-      setStatus(navigator.onLine ? "connected" : "offline");
-    };
+useEffect(() => {
+function updateConnection() {
+setConnection(
+navigator.onLine ? "connected" : "offline"
+);
+}
 
-    updateConnection();
 
-    window.addEventListener("online", updateConnection);
-    window.addEventListener("offline", updateConnection);
+updateConnection();
 
-    return () => {
-      window.removeEventListener("online", updateConnection);
-      window.removeEventListener("offline", updateConnection);
-    };
-  }, []);
+window.addEventListener("online", updateConnection);
+window.addEventListener("offline", updateConnection);
 
-  const labels = {
-    connected: "Connected",
-    offline: "Offline",
-    checking: "Checking",
-  };
+return () => {
+  window.removeEventListener("online", updateConnection);
+  window.removeEventListener("offline", updateConnection);
+};
 
-  return (
-    <div className="connection-status">
-      <span className={`connection-dot ${status}`} />
-      <span>{labels[status]}</span>
-    </div>
-  );
+}, []);
+
+let label: string;
+let dotClass: string;
+
+if (connection === "checking") {
+label = "Checking";
+dotClass = "checking";
+} else if (connection === "offline") {
+label = "Offline";
+dotClass = "offline";
+} else {
+switch (syncStatus) {
+case "syncing":
+label = "Connected · Syncing…";
+dotClass = "syncing";
+break;
+
+
+  case "synced":
+    label = "Connected · Synced";
+    dotClass = "synced";
+    break;
+
+  case "error":
+    label = "Connected · Sync failed";
+    dotClass = "sync-error";
+    break;
+
+  default:
+    label = "Connected";
+    dotClass = "connected";
+    break;
+}
+
+
+}
+
+return ( <div
+   className="connection-status"
+   role="status"
+   aria-live="polite"
+ >
+<span className={`connection-dot ${dotClass}`} /> <span>{label}</span> </div>
+);
 }

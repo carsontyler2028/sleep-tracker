@@ -1,7 +1,8 @@
-export const APP_VERSION = "0.4";
+export const APP_VERSION = "0.5 Beta";
 
 export const WHATS_NEW = [
-  "Added accounts and authentication",
-  "Added new user welcome",
+  "Cloud Account Syncing",
+  "Fixed Settings Scroll Wheels Overlap",
+  "Fixed Dark Mode Menu Color"
 
 ];

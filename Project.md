@@ -21,20 +21,20 @@ v0.2
     Y    -Delete confermation
 v0.3    
     Phase 3: Better Statistics/add beta test improvements
-    N    -Monthly averages
-    N    -Average bedtime
-    N    -Average wake time
-    N    -Consistancy score
-    N    -Longest streak
+    Y    -Monthly averages
+    Y    -Average bedtime
+    Y    -Average wake time
+    Y    -Consistancy score
+    Y    -Longest streak
 Launch v1.0
     Phase 4: Accounts and friends
-    N    -Create account
+    Y    -Create account
             >Username and password (Email?)
-    N    -Login
+    Y    -Login
             >Have guest option for people to test basic function without sign up
     N    -Password reset
             >Would need email or some way to reset
-    N    -Cloud sync
+    Y    -Cloud sync
     N    -Friend codes
             >Share friend code to add people
     N    -Basic friend profiles

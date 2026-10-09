@@ -1,44 +1,37 @@
 import AppLogo from "./AppLogo";
-import ConnectionStatus from "./ConnectionStatus";
+import ConnectionStatus, {
+type CloudSyncStatus,
+} from "./ConnectionStatus";
 import "./Header.css";
+import { APP_VERSION } from "../version";
 
 interface HeaderProps {
-  username: string | null;
+username: string | null;
+syncStatus: CloudSyncStatus;
 }
 
-function Header({
-  username,
-}: HeaderProps) {
+function Header({ username, syncStatus }: HeaderProps) {
+return ( <header className="app-header"> <div className="header-logo"> <AppLogo /> </div>
 
-  return (
-    <header className="app-header">
+  <div className="header-info">
+    <h1>Sleep Tracker</h1>
 
-      <div className="header-logo">
-        <AppLogo />
-      </div>
+    <p className="version">
+      Version {APP_VERSION}
+    </p>
 
-      <div className="header-info">
+    {username && (
+      <p className="usernameDisplay">
+        {username}
+      </p>
+    )}
 
-        <h1>
-          Sleep Tracker
-        </h1>
+    <ConnectionStatus syncStatus={syncStatus} />
+  </div>
+</header>
 
-        <p className="version">
-          v0.3 Beta
-        </p>
 
-        {username && (
-          <p className="usernameDisplay">
-            {username}
-          </p>
-        )}
-
-        <ConnectionStatus />
-
-      </div>
-
-    </header>
-  );
+);
 }
 
 export default Header;
