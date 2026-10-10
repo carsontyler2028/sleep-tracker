@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 import {
@@ -172,6 +171,23 @@ function App() {
 
   const [syncStatus, setSyncStatus] =
   useState<CloudSyncStatus>("idle");
+
+  const [recoveryMode, setRecoveryMode] = useState(false);
+
+  const recoveryModeRef = useRef(false);
+
+useEffect(() => {
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((event) => {
+    if (event === "PASSWORD_RECOVERY") {
+      recoveryModeRef.current = true;
+      setRecoveryMode(true);
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
 
 function setSyncMessage(message: string | null) {
   if (message === null) {
@@ -796,11 +812,15 @@ function setSyncMessage(message: string | null) {
     );
   }
 
-  if (!session && !guestMode) {
+  if ((!session && !guestMode) || recoveryMode) {
     return (
       <div className="app dark">
         <AuthPage
           onGuest={() => setGuestMode(true)}
+          recoveryMode={recoveryMode}
+          onPasswordResetComplete={() => {
+            setRecoveryMode(false);
+          }}
         />
       </div>
     );
