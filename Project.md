@@ -32,7 +32,7 @@ Launch v1.0
             >Username and password (Email?)
     Y    -Login
             >Have guest option for people to test basic function without sign up
-    N    -Password reset
+    Y    -Password reset
             >Would need email or some way to reset
     Y    -Cloud sync
     N    -Friend codes
